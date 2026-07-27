@@ -1,0 +1,20 @@
+name: urban-analytics
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - osmnx
+  - contextily
+  - mapclassify
+  - folium
+  - jupyter
+  - geopandas
+  - rasterstats
+  - libgdal-core
+  - gdal
+  - pip
+  - pip:
+      - rasterio
+      - pyogrio
+variables:
+  CONDA_DLL_SEARCH_MODIFICATION_ENABLE: "1"
