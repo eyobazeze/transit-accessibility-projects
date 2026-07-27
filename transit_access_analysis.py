@@ -122,7 +122,7 @@ print(f"  ✓ Total area within 500m of transit: {served_area_km2:.1f} km²")
 # ── 5. Load Real Population Data from WorldPop ────────────────────────────────
 print("\nSTEP 5: Loading real population density from WorldPop raster...")
 
-PROJECT_ROOT = BASE_DIR.parent.parent.parent
+PROJECT_ROOT = BASE_DIR
 
 CLIPPED_RASTER_4326 = PROJECT_ROOT / "data" / "processed" / "addis_population_clipped.tif"
 REPROJECTED_RASTER  = PROJECT_ROOT / "data" / "processed" / "addis_population_utm.tif"
@@ -180,6 +180,8 @@ pop_grid = gpd.GeoDataFrame({
 
 if city_boundary is not None:
     pop_grid = gpd.clip(pop_grid, city_boundary)
+    pop_grid.to_file(DATA_DIR / "processed" / "population_grid_full.geojson", driver="GeoJSON")
+    print(f"  ✓ Full population grid exported: {len(pop_grid)} cells")
 
 print(f"  ✓ Population grid created from real WorldPop data: {len(pop_grid):,} cells")
 print(f"  ✓ Mean density: {pop_grid['population_density'].mean():.0f} people/km²")
