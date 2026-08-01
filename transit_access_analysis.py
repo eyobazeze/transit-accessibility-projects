@@ -228,12 +228,12 @@ pop_grid.to_crs("EPSG:3857").plot(
     cmap="YlOrRd", alpha=0.6, markersize=2, legend=False
 )
 
-# Served area buffers
-buffers_gdf.to_crs("EPSG:3857").plot(
-    ax=ax1, color="#00b4d8", alpha=0.25, linewidth=0
+# Served area — dissolved territory, solid fill (reads as coverage, not a route network)
+served_area.to_crs("EPSG:3857").plot(
+    ax=ax1, color="#00b4d8", alpha=0.35, linewidth=0
 )
 served_area.to_crs("EPSG:3857").boundary.plot(
-    ax=ax1, color="#00b4d8", linewidth=0.8, linestyle="--"
+    ax=ax1, color="#00b4d8", linewidth=0.8
 )
 
 # Transit stops
@@ -248,7 +248,7 @@ except:
     pass
 
 ax1.set_title("Transit Coverage — 500m Walkability Buffers",
-              color="white", fontsize=13, fontweight="bold", pad=12)
+              color="white", fontsize=13, fontweight="bold", pad=20)
 ax1.set_axis_off()
 
 # Legend
@@ -267,13 +267,17 @@ if city_boundary is not None:
     city_boundary.to_crs("EPSG:3857").boundary.plot(ax=ax2, color="#555", linewidth=1)
 
 served_pop.to_crs("EPSG:3857").plot(
-    ax=ax2, color="#2d6a4f", alpha=0.4, markersize=2
+    ax=ax2, color="#2d6a4f", alpha=0.3, markersize=3
 )
 unserved_pop.to_crs("EPSG:3857").plot(
-    ax=ax2, color="#e76f51", alpha=0.3, markersize=2
+    ax=ax2, color="#e76f51", alpha=0.25, markersize=3
 )
-underserved_high_density.to_crs("EPSG:3857").plot(
-    ax=ax2, color="#e63946", alpha=0.8, markersize=4
+# Underserved high-density cells buffered into visible circles instead of tiny points —
+# these are the headline finding, so they need to read clearly at feed/thumbnail size
+underserved_high_density_buffered = underserved_high_density.copy()
+underserved_high_density_buffered["geometry"] = underserved_high_density.geometry.buffer(180)
+underserved_high_density_buffered.to_crs("EPSG:3857").plot(
+    ax=ax2, color="#e63946", alpha=0.9, edgecolor="#ffffff", linewidth=0.3
 )
 
 try:
@@ -282,7 +286,7 @@ except:
     pass
 
 ax2.set_title("Underserved High-Density Areas",
-              color="white", fontsize=13, fontweight="bold", pad=12)
+              color="white", fontsize=13, fontweight="bold", pad=20)
 ax2.set_axis_off()
 
 legend2 = [
@@ -293,18 +297,33 @@ legend2 = [
 ax2.legend(handles=legend2, loc="lower left",
            facecolor="#111", edgecolor="#444", labelcolor="white", fontsize=9)
 
-plt.suptitle(
-    "Public Transit Accessibility Analysis — Addis Ababa, Ethiopia",
-    color="white", fontsize=16, fontweight="bold", y=1.01
-)
-plt.figtext(0.5, -0.01,
-    "Data: OpenStreetMap | Analysis: GeoPandas, OSMnx | Author: Eyob Azeze Negussie",
-    ha="center", color="#888", fontsize=9
+# Reserve headroom above the panels so the suptitle, stat callout, and panel
+# titles each get their own vertical band. Using subplots_adjust (not
+# tight_layout) here because tight_layout doesn't reliably account for
+# suptitle/figtext elements placed above the top of the axes.
+fig.subplots_adjust(top=0.80, bottom=0.05)
+
+# Title stack, evenly spaced top-down: main title -> stat callout -> panel titles.
+# All three use figure-fraction y-coordinates (0-1), spaced 0.05 apart, which is
+# safe regardless of final saved size since savefig below uses a fixed pad_inches
+# instead of bbox_inches="tight" auto-cropping around text extents.
+fig.text(0.5, 0.97, "Public Transit Accessibility Analysis — Addis Ababa, Ethiopia",
+          ha="center", va="top", color="white", fontsize=16, fontweight="bold")
+
+coverage_pct = len(served_pop) / len(pop_grid) * 100 if len(pop_grid) > 0 else 0
+underserved_n = len(underserved_high_density)
+fig.text(0.5, 0.905,
+    f"{coverage_pct:.1f}% of grid area within 500m of transit  ·  "
+    f"{underserved_n:,} high-density cells underserved",
+    ha="center", va="top", color="#e63946", fontsize=13, fontweight="bold")
+
+fig.text(0.5, 0.02,
+    "Data: OpenStreetMap, WorldPop | Analysis: GeoPandas, OSMnx | Author: Eyob Azeze Negussie",
+    ha="center", va="bottom", color="#888", fontsize=9
 )
 
-plt.tight_layout()
 map_path = OUTPUT_DIR / "transit_access_map.png"
-plt.savefig(map_path, dpi=150, bbox_inches="tight",
+plt.savefig(map_path, dpi=150, pad_inches=0.15,
             facecolor="#1a1a2e", edgecolor="none")
 plt.close()
 print(f"  ✓ Static map saved → {map_path}")
