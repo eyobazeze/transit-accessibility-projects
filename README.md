@@ -1,113 +1,161 @@
-# 🚌 Transit Access & Underserved Areas — Addis Ababa
+# Population-Weighted Transit Proximity in Addis Ababa
 
-**A spatial equity analysis of public transit accessibility in Addis Ababa, Ethiopia**
-> *Who has access to public transport — and who is being left behind?*
+A reproducible spatial analysis of population proximity to **OSM-mapped public transit access points** in Addis Ababa, Ethiopia.
 
----
+> **Current research version:** v3 — native-pixel accessibility / 500 m research grid
+>
+> **Paper:** *Population-Weighted Proximity to Mapped Public Transit in Addis Ababa: A Spatial Analysis Using Gridded Population and OpenStreetMap Data*
 
-## Overview
+## Research question
 
-This project applies spatial analysis techniques to evaluate public transit accessibility across Addis Ababa. Using OpenStreetMap transit data and real population data from WorldPop, it identifies neighborhoods that are densely populated yet poorly served by the city's bus and light rail network.
+**Where in Addis Ababa do high-population areas have relatively poor proximity to mapped public transit?**
 
-The analysis is motivated by a simple question: as Addis Ababa continues to grow rapidly, are transit investments reaching the people who need them most?
+The study deliberately measures **Euclidean proximity to mapped transit access points**, not full transport accessibility. It does not estimate walking time, service quality, destination accessibility, or whether a location is adequately served.
 
----
+## Main results
 
-## Key Findings
+| Threshold | Area coverage | Population coverage | Estimated population beyond threshold |
+|---:|---:|---:|---:|
+| 300 m | 27.9% | 46.7% | 2.466 million |
+| **500 m** | **48.4%** | **75.4%** | **1.137 million** |
+| 800 m | 67.4% | 91.9% | 0.377 million |
+| 1,000 m | 75.1% | 95.4% | 0.212 million |
 
-| Metric                              | Value                                    |
-| ------------------------------------ | ----------------------------------------- |
-| Transit stops analyzed              | 2,417 (bus, light rail, minibus taxi)     |
-| Walkability buffer radius           | 500m (standard pedestrian shed)           |
-| City area within transit reach      | 254.3 km² (47.4% of the study area)       |
-| High-density underserved grid cells | 208                                       |
-| Population grid resolution          | 2,147 cells, real WorldPop-derived data   |
+At 500 m, 60 high-density screening-priority cells were identified. Together they contain approximately 272,072 estimated people, of whom approximately 205,654 are beyond 500 m from an OSM-mapped transit access point. The 60 cells form 32 four-neighbor contiguous groups.
 
-Real population data (not an estimate) shows that **over half the city's area falls outside a comfortable 500-meter walk of any transit stop** — and 208 of those underserved grid cells are in high-density zones, representing the areas where a coverage gap affects the most people.
+## Data
 
----
+### Population
 
-## Maps
+- **Source:** WorldPop, Ethiopia 2020 Population Counts
+- Approximate resolution: 100 m
+- Population values represent **estimated people per grid cell**.
+- DOI: https://doi.org/10.5258/SOTON/WP00682
 
-### Static Analysis Map
+The analysis uses the native population pixels and preserves their total population count. Population pixels are classified by their Euclidean distance to the nearest transit access point and then aggregated to 500 m research cells.
 
-![Transit Access Map](outputs/transit_access_map.png)
+### Administrative boundary
 
-*Left: 500m walkability buffers around transit stops overlaid on real population density. Right: served vs. underserved areas, with high-density underserved zones highlighted in red.*
+- **Source:** UN OCHA / Humanitarian Data Exchange, Ethiopia subnational administrative boundaries (COD-AB)
+- The woreda-level polygons are dissolved to produce the Addis Ababa study boundary.
+- Source: https://data.humdata.org/dataset/cod-ab-eth
 
-### Interactive Web Map
+The resulting study boundary is approximately **519.5 km²**.
 
-Open `outputs/transit_access_interactive.html` in any browser to explore:
-- Individual transit stop locations with popup labels
-- 500m walkability buffer zones
-- High-density underserved areas
+### Public transit
 
----
+- **Source:** OpenStreetMap via an Overpass snapshot
+- **Snapshot timestamp:** 2026-07-24T10:57:40Z
+- 2,417 matching OSM nodes were found in the snapshot; 2,414 fell inside the study boundary.
+- Matching tags include `highway=bus_stop`, `public_transport=platform`, `public_transport=stop_position`, and selected railway/station tags.
 
-## Tools & Methods
+The analysis retains **point geometries** matching the selected transit-related tags. It therefore does not represent every possible OSM transit feature: platforms mapped only as ways/areas are not separately represented as point access locations.
 
-| Tool           | Purpose                                                   |
-| -------------- | ---------------------------------------------------------- |
-| **GeoPandas**  | Spatial data manipulation, buffer analysis, spatial joins  |
-| **OSMnx**      | Fetching transit infrastructure from OpenStreetMap         |
-| **Rasterio**   | Reading and reprojecting WorldPop population raster data   |
-| **Folium**     | Interactive web map generation                             |
-| **Contextily** | Basemap tiles for static maps                              |
-| **Matplotlib** | Static publication-quality maps                            |
-| **Shapely**    | Geometric operations (buffers, unions)                     |
+OSM data is available under the Open Database License (ODbL). See https://www.openstreetmap.org/copyright.
 
-**Coordinate Reference System:** EPSG:32637 (UTM Zone 37N) for accurate metric measurements in Ethiopia.
+## Method
 
----
+1. Dissolve woreda-level boundary data to a fixed Addis Ababa study boundary.
+2. Extract the selected point transit features from the dated OSM/Overpass snapshot.
+3. Transform the WorldPop population-pixel centroids to EPSG:32637 while preserving the original population values.
+4. Calculate Euclidean distance from every native population-pixel centroid to its nearest OSM-mapped transit access point.
+5. Evaluate 300 m, 500 m, 800 m, and 1,000 m thresholds.
+6. Aggregate population and accessibility measures to 500 m research cells.
+7. Calculate population coverage and area coverage separately.
+8. Define screening-priority cells as cells in the top quartile of population density with at least 50% of their population beyond the specified threshold.
+9. Group 500 m screening-priority cells using four-neighbor contiguity. This is descriptive clustering, not a statistical spatial-autocorrelation test.
 
-## Data Sources
+### Population-weighted proximity
 
-| Dataset                        | Source                                                                                    | Notes                                              |
-| ------------------------------- | -------------------------------------------------------------------------------------------| --------------------------------------------------- |
-| Transit stops & infrastructure  | [OpenStreetMap](https://www.openstreetmap.org/) via OSMnx                                  | Bus stops, light rail stations                     |
-| Population density              | [WorldPop](https://www.worldpop.org/) via [HDX](https://data.humdata.org/dataset/worldpop-population-counts-2015-2030-eth) | Constrained model, ~100m resolution, resampled to a 500m grid |
-| Administrative boundaries       | [OCHA HDX Ethiopia](https://data.humdata.org/dataset/ethiopia-administrative-boundaries)    | City boundary, sub-city/woreda boundaries          |
+In this project, **population-weighted proximity** means that threshold coverage is weighted by the estimated population associated with each native raster pixel. It does **not** mean that the study calculates a population-weighted mean distance.
 
----
+For threshold \(T\):
 
-## How to Run
+\[
+C_T = \frac{\sum_i P_i I(d_i \leq T)}{\sum_i P_i} \times 100
+\]
 
-```bash
-# 1. Clone the repository
-git clone https://github.com/eyobazeze/urban-analytics-projects.git
-cd urban-analytics-projects
+where \(P_i\) is estimated population and \(d_i\) is Euclidean distance to the nearest mapped transit access point.
 
-# 2. Create and activate the environment
-conda env create -f environment.yml
-conda activate urban-analytics
+## Important interpretation limits
 
-# 3. Download population data
-# Get the Ethiopia population GeoTIFF from:
-# https://data.humdata.org/dataset/worldpop-population-counts-2015-2030-eth
-# Place it in data/raw/ before running the script
+This project should **not** be described as a complete measure of public transport accessibility.
 
-# 4. Run the analysis
-python transit_access_analysis.py
+- Euclidean distance is not walking-network distance.
+- The 500 m scenario is not the UN SDG 11.2.1 indicator.
+- The analysis does not measure service frequency, capacity, reliability, fares, crowding, operating hours, route destinations, or pedestrian safety.
+- OSM completeness and tagging can affect the mapped transit supply.
+- WorldPop population estimates are from 2020, while the OSM snapshot is from 2026.
+- The screening-priority thresholds are analytical choices, not universal planning standards.
+- The identified priority areas are **screening locations for further investigation**, not direct recommendations for new routes or stops.
 
-# 5. View outputs
-open outputs/transit_access_map.png
-open outputs/transit_access_interactive.html
+## Repository structure
+
+```text
+.
+├── data/
+│   └── raw/
+│       ├── boundary/          # OCHA/HDX boundary source used in the analysis
+│       ├── osm/               # dated OSM/Overpass snapshot
+│       └── population/        # WorldPop population raster used in the analysis
+├── outputs/
+│   ├── figures/               # publication figures
+│   ├── geospatial/            # derived GeoJSON/CSV outputs
+│   └── analysis_metadata_v3.json
+├── src/
+│   └── transit_access_analysis_v3.py
+├── CITATION.cff
+├── DATA_SOURCES.md
+├── requirements.txt
+└── README.md
 ```
 
----
+## Reproduce the analysis
 
-## Project Context
+Create an environment with Python 3.10+ and install the dependencies:
 
-This project is part of a broader portfolio exploring smart city and urban data challenges in Ethiopian cities, and is the first of a two-part spatial analysis series.
+```bash
+pip install -r requirements.txt
+```
 
-**Related:**
-- [Network-Based Healthcare & School Accessibility](https://github.com/eyobazeze/network-accessibility-project) — a companion project applying network analysis (real street-based walking distance) to a related accessibility question, reusing this project's population grid
-- [Smart Public Transport App — Figma Case Study](https://eyobazeze.medium.com)
+Then run:
 
----
+```bash
+python src/transit_access_analysis_v3.py
+```
+
+The script writes the reproducibility outputs to `outputs/geospatial/` and `outputs/analysis_metadata_v3.json`. The publication figures in `outputs/figures/` are the figures used in the working paper.
+
+## Validation checks
+
+The v3 workflow checks that:
+
+- population is preserved to floating-point precision;
+- served population is monotonic as the threshold increases;
+- served area is monotonic as the threshold increases;
+- coverage percentages remain between 0 and 100%;
+- the native population-pixel and transit-point counts match the dated source snapshot used for the paper.
+
+## Related literature
+
+The analysis is positioned as a proximity-screening baseline rather than a full accessibility model. Relevant Addis Ababa and African accessibility studies include:
+
+- Aklilu, A., & Necha, T. (2018). *Analysis of the spatial accessibility of Addis Ababa's light rail transit: The case of East–West corridor.* Urban Rail Transit, 4(1), 35–48. https://doi.org/10.1007/s40864-018-0076-6
+- Atumo, E. A. (2025). *Spatial Approach for the Assessment of Public Transit Node Accessibility in Urban Areas of Developing Countries: Evidence from Addis Ababa, Ethiopia.* Abstracts of the International Cartographic Association, 10, 12. https://doi.org/10.5194/ica-abs-10-12-2025
+- Asuah, A., & Acheampong, R. A. (2025). *Transport accessibility research in African cities: Systematic evidence review, knowledge gaps and directions for future research.* Urban Transitions, 3, 100013. https://doi.org/10.1016/j.ubtr.2025.100013
+- Geurs, K. T., & van Wee, B. (2004). *Accessibility evaluation of land-use and transport strategies: Review and research directions.* Journal of Transport Geography, 12(2), 127–140. https://doi.org/10.1016/j.jtrangeo.2003.10.005
+- Geurs, K. T., & van Wee, B. (2026). *A five-component conceptual model of calculated and perceived accessibility: Literature review and research directions.* Journal of Transport Geography, 134, 104678. https://doi.org/10.1016/j.jtrangeo.2026.104678
+- Samuel, M., & Emagnu, Y. M. (2026). *Spatial optimization of bus stop locations using GIS and an integrated accessibility index in Addis Ababa, Ethiopia.* Discover Cities, 3, 101. https://doi.org/10.1007/s44327-026-00287-z
+
+## Citation
+
+See `CITATION.cff`.
+
+## OSM attribution
+
+Map data from OpenStreetMap, available under the Open Database License (ODbL): https://www.openstreetmap.org/copyright
 
 ## Author
 
-**Eyob Azeze** — UI/UX Designer | Urban Tech & Smart Cities | Addis Ababa, Ethiopia
-
-[GitHub](https://github.com/eyobazeze) · [LinkedIn](https://linkedin.com/in/eyobazeze) · [Medium](https://eyobazeze.medium.com) · [Figma](https://figma.com/@eyobazeze) · [X / Twitter](https://x.com/EyobAzeze)
+**Eyob Azeze Negussie**  
+Independent Researcher, Addis Ababa, Ethiopia
