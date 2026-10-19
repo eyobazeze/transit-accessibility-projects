@@ -1,5 +1,4 @@
 {
-  "version": "v3_native_pixel_accessibility",
   "boundary_source": "OCHA/HDX Ethiopia subnational administrative boundaries; woreda polygons dissolved to Addis Ababa study boundary",
   "population_source": "WorldPop Ethiopia 2020 Population Counts; estimated people per approximately 100 m grid cell",
   "population_raster_crs": "EPSG:4326",

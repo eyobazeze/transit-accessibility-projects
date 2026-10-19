@@ -1,6 +1,6 @@
 # Reproducibility Notes
 
-The reported paper results are generated from the files committed in `data/raw/` and the v3 analysis script.
+The reported paper results are generated from the files committed in `data/raw/` and the analysis script in `src/`.
 
 ## Source snapshot identity
 
@@ -11,7 +11,7 @@ The reported paper results are generated from the files committed in `data/raw/`
 - Native population pixels inside boundary: 56,666.
 - OSM matching nodes: 2,417 total; 2,414 inside boundary.
 - Research cells: 2,155 valid 500 m cells.
-- Total estimated population: 4,627,715.063.
+- Total estimated population represented within the study boundary: 4,627,715.063.
 
 ## Core validation values
 
@@ -22,6 +22,10 @@ The reported paper results are generated from the files committed in `data/raw/`
 | 800 m | 67.3587% | 91.8489% | 377,210.199 |
 | 1,000 m | 75.0937% | 95.4214% | 211,886.576 |
 
-## Important implementation detail
+## Important implementation details
 
 The 500 m grid is aligned to the projected bounds of the source WorldPop raster, while each grid cell is clipped to the dissolved Addis Ababa study boundary. Native population-pixel centroids are used for the Euclidean nearest-transit calculation; population is not first resampled to the 500 m grid for the accessibility classification.
+
+The estimated population associated with each native raster cell is represented at that cell's centroid for the proximity calculation. The resulting threshold coverage is therefore population-weighted by the native pixel population values, but the study does not calculate a population-weighted mean distance.
+
+The workflow evaluates Euclidean proximity rather than walking-network distance. The 500 m threshold is an analytical scenario and is not the UN SDG 11.2.1 indicator.

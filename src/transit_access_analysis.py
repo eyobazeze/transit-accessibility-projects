@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reproduce the v3 population-weighted transit-proximity analysis for Addis Ababa.
+"""Reproduce the population-weighted transit-proximity analysis for Addis Ababa.
 
 The analysis uses:
 - OCHA/HDX woreda-level administrative boundaries, dissolved to Addis Ababa;
@@ -187,81 +187,6 @@ def area_coverage(points, boundary_geom, threshold):
     return points.buffer(threshold).union_all().intersection(boundary_geom).area / 1e6
 
 
-def write_outputs(out: Path, cells, points, boundary_geom, distance, population, thresholds, osm_timestamp, matched_total):
-    out.mkdir(parents=True, exist_ok=True)
-    geo = out / "geospatial"
-    figs = out / "figures"
-    geo.mkdir(exist_ok=True)
-    figs.mkdir(exist_ok=True)
-
-    cells.to_crs("EPSG:4326").to_file(geo / "population_access_cells_500m_v3.geojson", driver="GeoJSON")
-    points.to_crs("EPSG:4326").to_file(geo / "transit_access_points_v3.geojson", driver="GeoJSON")
-
-    total_pop = float(population.sum())
-    cutoff = float(cells["population_density"].quantile(0.75))
-    rows = []
-    for t in thresholds:
-        served = distance <= t
-        served_pop = float(population[served].sum())
-        underserved_pop = total_pop - served_pop
-        a = area_coverage(points.geometry, boundary_geom, t)
-        high_density = cells["population_density"] >= cutoff
-        # Priority is defined using the 500 m scenario; sensitivity rows report the same rule at each threshold.
-        if t == 500:
-            priority = cells[high_density & (cells["underserved_share_500m"] >= 0.5)].copy()
-        else:
-            share = []
-            # Compute cell-level underserved share for this threshold from native pixels.
-            # Use the same row/col assignment as the cell table.
-            # Rebuild only the required shares from native arrays below in main().
-            priority = cells.iloc[0:0].copy()
-        rows.append({
-            "threshold_m": t,
-            "accessible_area_km2": a,
-            "area_coverage_pct": a / (boundary_geom.area / 1e6) * 100,
-            "population_served": served_pop,
-            "population_coverage_pct": served_pop / total_pop * 100,
-            "population_underserved": underserved_pop,
-            "high_density_cutoff_75th_percentile": cutoff,
-        })
-    return rows, cutoff
-
-
-def make_figures(boundary, points, cells, sensitivity, priority, outdir):
-    outdir.mkdir(parents=True, exist_ok=True)
-    boundary_gdf = gpd.GeoDataFrame(geometry=[boundary], crs=CRS_PROJECTED)
-
-    fig, ax = plt.subplots(figsize=(10, 10))
-    boundary_gdf.boundary.plot(ax=ax, linewidth=1.5)
-    points.plot(ax=ax, markersize=4, alpha=0.65)
-    ax.set_title("Study Area and OSM-Mapped Transit Access Points")
-    ax.set_axis_off(); fig.tight_layout(); fig.savefig(outdir / "Fig1_study_area_transit.png", dpi=400, bbox_inches="tight"); plt.close(fig)
-
-    fig, ax = plt.subplots(figsize=(10, 10))
-    cells.plot(ax=ax, column="mean_distance_m", cmap="viridis", legend=True, linewidth=0)
-    boundary_gdf.boundary.plot(ax=ax, color="black", linewidth=0.8)
-    ax.set_title("Euclidean Distance to the Nearest OSM-Mapped Transit Access Point")
-    ax.set_axis_off(); fig.tight_layout(); fig.savefig(outdir / "Fig2_nearest_transit_distance.png", dpi=400, bbox_inches="tight"); plt.close(fig)
-
-    fig, ax = plt.subplots(figsize=(10, 10))
-    cells.plot(ax=ax, column="population_density", cmap="YlOrRd", legend=True, linewidth=0)
-    priority.plot(ax=ax, facecolor="none", edgecolor="black", linewidth=0.8)
-    boundary_gdf.boundary.plot(ax=ax, color="black", linewidth=0.8)
-    clusters, _ = connected_clusters(priority)
-    for cid, group in priority.groupby("cluster_id"):
-        p = group.geometry.union_all().representative_point()
-        ax.text(p.x, p.y, str(cid), ha="center", va="center", fontsize=8)
-    ax.set_title("Population Density and Screening-Priority Clusters")
-    ax.set_axis_off(); fig.tight_layout(); fig.savefig(outdir / "Fig3_priority_clusters.png", dpi=400, bbox_inches="tight"); plt.close(fig)
-
-    fig, ax = plt.subplots(figsize=(8, 5.5))
-    ax.plot(sensitivity["threshold_m"], sensitivity["population_coverage_pct"], marker="o")
-    ax.set_xlabel("Transit-proximity threshold (m)")
-    ax.set_ylabel("Population coverage (%)")
-    ax.set_title("Sensitivity of Population Coverage to the Transit-Proximity Threshold")
-    ax.grid(alpha=0.25); fig.tight_layout(); fig.savefig(outdir / "Fig4_threshold_sensitivity.png", dpi=400, bbox_inches="tight"); plt.close(fig)
-
-
 def main():
     args = parse_args()
     root = args.root
@@ -334,11 +259,10 @@ def main():
     pd.DataFrame(cluster_rows).sort_values("cluster_id").to_csv(out / "geospatial/priority_cluster_summary.csv", index=False)
 
     sensitivity = pd.DataFrame(sensitivity_rows)
-    sensitivity.to_csv(out / "geospatial/accessibility_sensitivity_v3.csv", index=False)
+    sensitivity.to_csv(out / "geospatial/accessibility_sensitivity.csv", index=False)
 
     metadata = {
-        "version": "v3_native_pixel_accessibility",
-        "boundary_source": "OCHA/HDX Ethiopia subnational administrative boundaries; woreda polygons dissolved to Addis Ababa study boundary",
+                "boundary_source": "OCHA/HDX Ethiopia subnational administrative boundaries; woreda polygons dissolved to Addis Ababa study boundary",
         "population_source": "WorldPop Ethiopia 2020 Population Counts; estimated people per approximately 100 m grid cell",
         "population_raster_crs": source_crs,
         "population_raster_resolution": list(source_resolution),
@@ -373,12 +297,12 @@ def main():
             "The 50% underserved-population share is an analytical screening rule, not a universal planning standard.",
         ],
     }
-    (out / "analysis_metadata_v3.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+    (out / "analysis_metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
 
     # Save a simple diagnostic table with native-pixel results for auditability.
     pd.DataFrame({"x_m": x, "y_m": y, "population": pop, "nearest_transit_distance_m": distance, "within_300m": distance <= 300, "within_500m": distance <= 500, "within_800m": distance <= 800, "within_1000m": distance <= 1000}).to_csv(out / "geospatial/native_population_accessibility.csv", index=False)
 
-    print(f"Completed v3 analysis: {len(points)} transit access points, {len(pop)} native population pixels, {len(cells)} 500 m cells.")
+    print(f"Completed analysis: {len(points)} transit access points, {len(pop)} native population pixels, {len(cells)} 500 m cells.")
     print(sensitivity[["threshold_m", "area_coverage_pct", "population_coverage_pct", "population_underserved"]].to_string(index=False))
     print(f"500 m screening-priority cells: {len(priority)}; clusters: {len(clusters)}")
 

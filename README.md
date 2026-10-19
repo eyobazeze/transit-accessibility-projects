@@ -2,13 +2,11 @@
 
 A reproducible spatial analysis of population proximity to **OSM-mapped public transit access points** in Addis Ababa, Ethiopia.
 
-> **Current research version:** — native-pixel accessibility / 500 m research grid
->
 > **Paper:** *Population-Weighted Proximity to Mapped Public Transit in Addis Ababa: A Spatial Analysis Using Gridded Population and OpenStreetMap Data*
 
 ## Research question
 
-**Where in Addis Ababa do high-population areas have relatively poor proximity to mapped public transit?**
+**Where in Addis Ababa do high-density areas have relatively poor proximity to mapped public transit?**
 
 The study deliberately measures **Euclidean proximity to mapped transit access points**, not full transport accessibility. It does not estimate walking time, service quality, destination accessibility, or whether a location is adequately served.
 
@@ -47,7 +45,7 @@ The resulting study boundary is approximately **519.5 km²**.
 - **Source:** OpenStreetMap via an Overpass snapshot
 - **Snapshot timestamp:** 2026-07-24T10:57:40Z
 - 2,417 matching OSM nodes were found in the snapshot; 2,414 fell inside the study boundary.
-- Matching tags include `highway=bus_stop`, `public_transport=platform`, `public_transport=stop_position`, and selected railway/station tags.
+- Matching tags include `highway=bus_stop`, `public_transport=platform`, `public_transport=stop_position`, `public_transport=station`, `railway=station`, `railway=stop`, `railway=halt`, and `railway=tram_stop`.
 
 The analysis retains **point geometries** matching the selected transit-related tags. It therefore does not represent every possible OSM transit feature: platforms mapped only as ways/areas are not separately represented as point access locations.
 
@@ -87,6 +85,7 @@ This project should **not** be described as a complete measure of public transpo
 - OSM completeness and tagging can affect the mapped transit supply.
 - WorldPop population estimates are from 2020, while the OSM snapshot is from 2026.
 - The screening-priority thresholds are analytical choices, not universal planning standards.
+- Each native population raster cell is represented by its centroid for the proximity calculation; the estimated population in that cell is therefore treated as associated with that representative location.
 - The identified priority areas are **screening locations for further investigation**, not direct recommendations for new routes or stops.
 
 ## Repository structure
@@ -107,6 +106,8 @@ This project should **not** be described as a complete measure of public transpo
 ├── CITATION.cff
 ├── DATA_SOURCES.md
 ├── requirements.txt
+├── docs/
+│   └── REPRODUCIBILITY_NOTES.md
 └── README.md
 ```
 
