@@ -1,0 +1,44 @@
+{
+  "boundary_source": "OCHA/HDX Ethiopia subnational administrative boundaries; woreda polygons dissolved to Addis Ababa study boundary",
+  "population_source": "WorldPop Ethiopia 2020 Population Counts; estimated people per approximately 100 m grid cell",
+  "population_raster_crs": "EPSG:4326",
+  "population_raster_resolution": [
+    0.00083333333,
+    0.00083333333
+  ],
+  "osm_snapshot": "osm_transit_snapshot_2026-07-24.json",
+  "osm_timestamp": "2026-07-24T10:57:40Z",
+  "osm_matching_nodes_total": 2417,
+  "transit_access_points_within_boundary": 2414,
+  "crs_projected": "EPSG:32637",
+  "native_population_pixels": 56666,
+  "analysis_grid_size_m": 500,
+  "analysis_cells": 2155,
+  "population_total": 4627715.063027407,
+  "boundary_area_km2": 519.5014197971368,
+  "accessibility_definition": "Euclidean distance from each native population-pixel centroid to nearest OSM-mapped transit access point",
+  "population_aggregation": "native population pixels classified by threshold and aggregated to 500 m research cells",
+  "area_coverage_definition": "area of union of transit-access buffers intersected with study boundary",
+  "population_coverage_definition": "population in native pixels whose centroid is within the threshold divided by total study population",
+  "priority_definition": "top quartile of 500 m population density AND at least 50% of cell population beyond the specified threshold",
+  "thresholds_m": [
+    300,
+    500,
+    800,
+    1000
+  ],
+  "validation": {
+    "population_preservation_abs_error": 0.0,
+    "served_population_monotonic": true,
+    "area_monotonic": true,
+    "coverage_bounds": true,
+    "distance_min": 1.3165177661840632,
+    "distance_max": 5536.432941887428
+  },
+  "notes": [
+    "Transit features are described as OSM-mapped transit access points rather than unique physical stops.",
+    "The extraction retains point geometries matching selected transit-related tags; line/area platforms are not represented as separate access points in this analysis.",
+    "Distances are Euclidean proximity, not walking-network accessibility.",
+    "The 50% underserved-population share is an analytical screening rule, not a universal planning standard."
+  ]
+}

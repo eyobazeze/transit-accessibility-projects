@@ -1,0 +1,4 @@
+Figure 1. Study area and OSM-mapped transit access points.
+Figure 2. Cell-level mean Euclidean distance to the nearest OSM-mapped transit access point.
+Figure 3. Population density and 32 contiguous screening-priority clusters comprising 60 high-density/low-proximity cells. Numbers denote cluster IDs.
+Figure 4. Sensitivity of population coverage to the transit-proximity threshold.
