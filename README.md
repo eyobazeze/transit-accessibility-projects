@@ -2,7 +2,7 @@
 
 A reproducible spatial analysis of population proximity to **OSM-mapped public transit access points** in Addis Ababa, Ethiopia.
 
-> **Current research version:** v3 — native-pixel accessibility / 500 m research grid
+> **Current research version:** — native-pixel accessibility / 500 m research grid
 >
 > **Paper:** *Population-Weighted Proximity to Mapped Public Transit in Addis Ababa: A Spatial Analysis Using Gridded Population and OpenStreetMap Data*
 
@@ -101,9 +101,9 @@ This project should **not** be described as a complete measure of public transpo
 ├── outputs/
 │   ├── figures/               # publication figures
 │   ├── geospatial/            # derived GeoJSON/CSV outputs
-│   └── analysis_metadata_v3.json
+│   └── analysis_metadata.json
 ├── src/
-│   └── transit_access_analysis_v3.py
+│   └── transit_access_analysis.py
 ├── CITATION.cff
 ├── DATA_SOURCES.md
 ├── requirements.txt
@@ -121,14 +121,14 @@ pip install -r requirements.txt
 Then run:
 
 ```bash
-python src/transit_access_analysis_v3.py
+python src/transit_access_analysis.py
 ```
 
-The script writes the reproducibility outputs to `outputs/geospatial/` and `outputs/analysis_metadata_v3.json`. The publication figures in `outputs/figures/` are the figures used in the working paper.
+The script writes the reproducibility outputs to `outputs/geospatial/` and `outputs/analysis_metadata.json`. The publication figures in `outputs/figures/` are the figures used in the working paper.
 
 ## Validation checks
 
-The v3 workflow checks that:
+The workflow checks that:
 
 - population is preserved to floating-point precision;
 - served population is monotonic as the threshold increases;
