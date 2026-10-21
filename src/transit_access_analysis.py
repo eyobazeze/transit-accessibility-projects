@@ -4,7 +4,7 @@
 The analysis uses:
 - OCHA/HDX woreda-level administrative boundaries, dissolved to Addis Ababa;
 - WorldPop Ethiopia 2020 population counts (~100 m pixels);
-- a dated OSM/Overpass snapshot of point transit features retrieved 2026-07-24.
+- A dated OSM/Overpass snapshot of point transit features retrieved 2026-07-24.
 
 Core metric: Euclidean distance from each native population-pixel centroid to the
 nearest OSM-mapped transit access point. Population coverage is calculated by
