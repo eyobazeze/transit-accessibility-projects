@@ -2,7 +2,7 @@
 """Reproduce the population-weighted transit-proximity analysis for Addis Ababa.
 
 The analysis uses:
-- OCHA/HDX woreda-level administrative boundaries, dissolved to Addis Ababa;
+- OCHA/HDX Woreda-level administrative boundaries, dissolved to Addis Ababa;
 - WorldPop Ethiopia 2020 population counts (~100 m pixels);
 - A dated OSM/Overpass snapshot of point transit features retrieved 2026-07-24.
 
