@@ -16,7 +16,7 @@ The study deliberately measures **Euclidean proximity to mapped transit access p
 |---:|---:|---:|---:|
 | 300 m | 27.9% | 46.7% | 2.466 million |
 | **500 m** | **48.4%** | **75.4%** | **1.137 million** |
-| 800 m | 67.4% | 91.9% | 0.377 million |
+| 800 m | 67.4% | 91.8% | 0.377 million |
 | 1,000 m | 75.1% | 95.4% | 0.212 million |
 
 At 500 m, 60 high-density screening-priority cells were identified. Together they contain approximately 272,072 estimated people, of whom approximately 205,654 are beyond 500 m from an OSM-mapped transit access point. The 60 cells form 32 four-neighbor contiguous groups.
@@ -34,9 +34,12 @@ The analysis uses the native population pixels and preserves their total populat
 
 ### Administrative boundary
 
-- **Source:** UN OCHA / Humanitarian Data Exchange, Ethiopia subnational administrative boundaries (COD-AB)
-- The woreda-level polygons are dissolved to produce the Addis Ababa study boundary.
-- Source: https://data.humdata.org/dataset/cod-ab-eth
+- **Dataset:** Ethiopia – Addis Ababa subcities and woredas (resource `aa_worda_boundary.zip`)
+- **Source:** Space Science and Geospatial Institute (SSGI); contributed to the Humanitarian Data Exchange (HDX) by 3iS
+- **URL:** https://data.humdata.org/dataset/ethiopia-addis-ababa-subcities-and-woredas (HDX dataset ID `8d82f1ca-5a1d-4e73-9fea-8e53c190869d`), downloaded 6 July 2026
+- **Licence:** CC0 1.0 (Public Domain)
+- 116 woredas in 10 sub-cities; the woreda-level polygons are dissolved to produce the Addis Ababa study boundary.
+- This is not the OCHA COD-AB boundary set. The HDX record cautions that the dataset does not fit the woreda boundaries in shapefiles shared by OCHA.
 
 The resulting study boundary is approximately **519.5 km²**.
 
@@ -94,7 +97,7 @@ This project should **not** be described as a complete measure of public transpo
 .
 ├── data/
 │   └── raw/
-│       ├── boundary/          # OCHA/HDX boundary source used in the analysis
+│       ├── boundary/          # SSGI boundary (via HDX, CC0) used in the analysis
 │       ├── osm/               # dated OSM/Overpass snapshot
 │       └── population/        # WorldPop population raster used in the analysis
 ├── outputs/
