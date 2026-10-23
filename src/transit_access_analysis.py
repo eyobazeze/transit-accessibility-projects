@@ -2,7 +2,7 @@
 """Reproduce the population-weighted transit-proximity analysis for Addis Ababa.
 
 The analysis uses:
-- OCHA/HDX Woreda-level administrative boundaries, dissolved to Addis Ababa;
+- SSGI woreda-level administrative boundaries for Addis Ababa (via HDX, CC0 1.0), dissolved to the study boundary;
 - WorldPop Ethiopia 2020 population counts (~100 m pixels);
 - A dated OSM/Overpass snapshot of point transit features retrieved 2026-07-24.
 
@@ -262,7 +262,7 @@ def main():
     sensitivity.to_csv(out / "geospatial/accessibility_sensitivity.csv", index=False)
 
     metadata = {
-                "boundary_source": "OCHA/HDX Ethiopia subnational administrative boundaries; woreda polygons dissolved to Addis Ababa study boundary",
+                "boundary_source": "Space Science and Geospatial Institute (SSGI) Addis Ababa woreda boundaries, obtained via HDX (CC0 1.0); woreda polygons dissolved to the study boundary",
         "population_source": "WorldPop Ethiopia 2020 Population Counts; estimated people per approximately 100 m grid cell",
         "population_raster_crs": source_crs,
         "population_raster_resolution": list(source_resolution),
