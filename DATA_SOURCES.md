@@ -12,11 +12,17 @@ The analysis uses the supplied population counts as pixel-level population estim
 
 ## 2. Administrative boundary
 
-**Dataset:** Ethiopia – Subnational Administrative Boundaries (COD-AB)  
-**Provider:** United Nations Office for the Coordination of Humanitarian Affairs / Humanitarian Data Exchange  
-**Source:** https://data.humdata.org/dataset/cod-ab-eth
+**Dataset:** Ethiopia – Addis Ababa subcities and woredas (resource `aa_worda_boundary.zip`)  
+**Source:** Space Science and Geospatial Institute (SSGI)  
+**HDX contributor:** 3iS  
+**URL:** https://data.humdata.org/dataset/ethiopia-addis-ababa-subcities-and-woredas (HDX dataset ID `8d82f1ca-5a1d-4e73-9fea-8e53c190869d`)  
+**Downloaded:** 6 July 2026  
+**HDX dates:** time period 24 October 2024; added 26 March 2025; modified 19 December 2025  
+**Licence:** CC0 1.0 (Public Domain)
 
-The woreda-level polygons supplied with the project are dissolved to form the Addis Ababa study boundary.
+The file contains 116 woredas in 10 sub-cities (EPSG:4326). The zip's `wfsrequest.txt` records an export from the EthioNSDI GeoServer (layer `geonode:aa_worda_boundary`). The woreda-level polygons are dissolved to form the Addis Ababa study boundary.
+
+This is not the OCHA COD-AB boundary set. The HDX record cautions that the dataset does not fit the woreda boundaries in shapefiles shared by OCHA.
 
 ## 3. OpenStreetMap
 
