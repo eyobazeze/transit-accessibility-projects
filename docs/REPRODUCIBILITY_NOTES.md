@@ -6,7 +6,7 @@ The reported paper results are generated from the files committed in `data/raw/`
 
 - WorldPop: Ethiopia 2020 Population Counts, DOI 10.5258/SOTON/WP00682.
 - OSM: Overpass snapshot timestamp `2026-07-24T10:57:40Z`.
-- Study boundary: OCHA/HDX Ethiopia woreda-level administrative boundaries dissolved to Addis Ababa.
+- Study boundary: SSGI Addis Ababa woreda boundaries (HDX dataset "Ethiopia – Addis Ababa subcities and woredas", CC0 1.0, downloaded 6 July 2026) dissolved to the study boundary.
 - Projected CRS: EPSG:32637.
 - Native population pixels inside boundary: 56,666.
 - OSM matching nodes: 2,417 total; 2,414 inside boundary.
