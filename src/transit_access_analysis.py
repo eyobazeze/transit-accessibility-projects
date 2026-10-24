@@ -3,7 +3,7 @@
 
 The analysis uses:
 - SSGI woreda-level administrative boundaries for Addis Ababa (via HDX, CC0 1.0), dissolved to the study boundary;
-- WorldPop Ethiopia 2020 population counts (~100 m pixels);
+- WorldPop R2025A v1 constrained 2026 population counts (~100 m pixels);
 - A dated OSM/Overpass snapshot of point transit features retrieved 2026-07-24.
 
 Core metric: Euclidean distance from each native population-pixel centroid to the
@@ -263,7 +263,7 @@ def main():
 
     metadata = {
                 "boundary_source": "Space Science and Geospatial Institute (SSGI) Addis Ababa woreda boundaries, obtained via HDX (CC0 1.0); woreda polygons dissolved to the study boundary",
-        "population_source": "WorldPop Ethiopia 2020 Population Counts; estimated people per approximately 100 m grid cell",
+        "population_source": "WorldPop Global 2015-2030 constrained population counts, R2025A v1, year 2026 (eth_pop_2026_CN_100m_R2025A_v1); estimated people per approximately 100 m grid cell",
         "population_raster_crs": source_crs,
         "population_raster_resolution": list(source_resolution),
         "osm_snapshot": osm_path.name,

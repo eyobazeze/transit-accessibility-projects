@@ -2,9 +2,11 @@
 
 ## 1. WorldPop population
 
-**Dataset:** Ethiopia 2020 Population Counts  
+**Dataset:** WorldPop Global 2015–2030 constrained population counts, R2025A v1, year 2026  
+**File:** `eth_pop_2026_CN_100m_R2025A_v1.tif` (repository holds a clip: `addis_population_clipped.tif`)  
 **Provider:** WorldPop, University of Southampton  
-**DOI:** https://doi.org/10.5258/SOTON/WP00682  
+**Citation:** Bondarenko et al. (2026), https://doi.org/10.5258/SOTON/WP00839  
+**Note:** constrained product; unsettled pixels are NoData. WorldPop labels this release an early version that may change.  
 **Resolution:** approximately 100 m  
 **Interpretation:** estimated number of people per grid cell.
 
@@ -28,7 +30,8 @@ This is not the OCHA COD-AB boundary set. The HDX record cautions that the datas
 
 **Source:** OpenStreetMap data retrieved through an Overpass API snapshot.  
 **Snapshot timestamp:** `2026-07-24T10:57:40Z`  
-**Local snapshot file:** `data/raw/osm/osm_transit_snapshot_2026-07-24.json`
+**Local snapshot file:** `data/raw/osm/osm_transit_snapshot_2026-07-24.json`  
+**Query:** requested through OSMnx (`ox.features_from_place("Addis Ababa, Ethiopia", tags)`); the generated Overpass text was not saved. The snapshot's contents (2,577 nodes, 75 ways; 2,417 tagged transit nodes) are consistent with the tag list below; see `docs/OSM_RETRIEVAL.md`.
 
 The snapshot contains the Overpass attribution notice that the data are from OpenStreetMap and are made available under ODbL.
 

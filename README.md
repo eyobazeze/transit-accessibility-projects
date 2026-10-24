@@ -25,10 +25,11 @@ At 500 m, 60 high-density screening-priority cells were identified. Together the
 
 ### Population
 
-- **Source:** WorldPop, Ethiopia 2020 Population Counts
-- Approximate resolution: 100 m
+- **Source:** WorldPop Global 2015–2030 constrained population counts, release R2025A v1, year 2026 (file `eth_pop_2026_CN_100m_R2025A_v1.tif`; the repository holds a clip of it, `addis_population_clipped.tif`)
+- Approximate resolution: 100 m (3 arc-seconds)
+- Constrained product: unsettled pixels are NoData (about 8% of pixels inside the study boundary)
 - Population values represent **estimated people per grid cell**.
-- DOI: https://doi.org/10.5258/SOTON/WP00682
+- Citation: Bondarenko et al. (2026), DOI: https://doi.org/10.5258/SOTON/WP00839 (WorldPop describes R2025A v1 as an early release that may change)
 
 The analysis uses the native population pixels and preserves their total population count. Population pixels are classified by their Euclidean distance to the nearest transit access point and then aggregated to 500 m research cells.
 
@@ -73,10 +74,10 @@ In this project, **population-weighted proximity** means that threshold coverage
 For threshold \(T\):
 
 \[
-CT = [Σ Pi I(di ≤ T) / Σ Pi] × 100
+C_T = \frac{\sum_i P_i I(d_i \leq T)}{\sum_i P_i} \times 100
 \]
 
-where \(Pi\) is estimated population and \(di\) is Euclidean distance to the nearest mapped transit access point.
+where \(P_i\) is estimated population and \(d_i\) is Euclidean distance to the nearest mapped transit access point.
 
 ## Important interpretation limits
 
@@ -86,7 +87,7 @@ This project should **not** be described as a complete measure of public transpo
 - The 500 m scenario is not the UN SDG 11.2.1 indicator.
 - The analysis does not measure service frequency, capacity, reliability, fares, crowding, operating hours, route destinations, or pedestrian safety.
 - OSM completeness and tagging can affect the mapped transit supply.
-- WorldPop population estimates are from 2020, while the OSM snapshot is from 2026.
+- The WorldPop population surface is a 2026 modeled estimate from an early (v1) release that may be revised; the OSM snapshot reflects one date (24 July 2026).
 - The screening-priority thresholds are analytical choices, not universal planning standards.
 - Each native population raster cell is represented by its centroid for the proximity calculation; the estimated population in that cell is therefore treated as associated with that representative location.
 - The identified priority areas are **screening locations for further investigation**, not direct recommendations for new routes or stops.
@@ -128,7 +129,13 @@ Then run:
 python src/transit_access_analysis.py
 ```
 
-The script writes the reproducibility outputs to `outputs/geospatial/` and `outputs/analysis_metadata.json`. The publication figures in `outputs/figures/` are the figures used in the working paper.
+The script writes the reproducibility outputs to `outputs/geospatial/` and `outputs/analysis_metadata.json`. The publication figures in `outputs/figures/` are the figures used in the working paper. They are regenerated from the saved outputs (no analysis is recomputed) with:
+
+```bash
+python src/make_figures.py
+```
+
+Density classes in Figure 3 are quartiles of the 2,155 research-cell densities, and the colour bands in Figure 2 follow the paper's proximity thresholds (300, 500, 800 and 1,000 m).
 
 ## Validation checks
 

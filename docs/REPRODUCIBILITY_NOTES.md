@@ -4,7 +4,7 @@ The reported paper results are generated from the files committed in `data/raw/`
 
 ## Source snapshot identity
 
-- WorldPop: Ethiopia 2020 Population Counts, DOI 10.5258/SOTON/WP00682.
+- WorldPop: Global 2015–2030 constrained population counts, R2025A v1, 2026 (eth_pop_2026_CN_100m_R2025A_v1.tif), DOI 10.5258/SOTON/WP00839.
 - OSM: Overpass snapshot timestamp `2026-07-24T10:57:40Z`.
 - Study boundary: SSGI Addis Ababa woreda boundaries (HDX dataset "Ethiopia – Addis Ababa subcities and woredas", CC0 1.0, downloaded 6 July 2026) dissolved to the study boundary.
 - Projected CRS: EPSG:32637.
