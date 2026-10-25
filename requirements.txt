@@ -1,6 +1,6 @@
 Python>=3.10
 numpy>=1.24
-pandas>=2.0
+pandas>=2.2
 geopandas>=1.0
 shapely>=2.0
 pyproj>=3.5

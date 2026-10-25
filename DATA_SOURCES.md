@@ -5,7 +5,7 @@
 **Dataset:** WorldPop Global 2015–2030 constrained population counts, R2025A v1, year 2026  
 **File:** `eth_pop_2026_CN_100m_R2025A_v1.tif` (repository holds a clip: `addis_population_clipped.tif`)  
 **Provider:** WorldPop, University of Southampton  
-**Citation:** Bondarenko et al. (2026), https://doi.org/10.5258/SOTON/WP00839  
+**Citation:** Bondarenko et al. (2025), https://doi.org/10.5258/SOTON/WP00839  
 **Note:** constrained product; unsettled pixels are NoData. WorldPop labels this release an early version that may change.  
 **Resolution:** approximately 100 m  
 **Interpretation:** estimated number of people per grid cell.
