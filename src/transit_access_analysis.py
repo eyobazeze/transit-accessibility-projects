@@ -283,7 +283,7 @@ def main():
         "priority_definition": "top quartile of 500 m population density AND at least 50% of cell population beyond the specified threshold",
         "thresholds_m": THRESHOLDS_M,
         "validation": {
-            "population_preservation_abs_error": 0.0,
+            "population_preservation_abs_error": float(abs(cells["population"].sum() - total_pop)),
             "served_population_monotonic": bool(all(np.diff(sensitivity.population_served) >= -1e-9)),
             "area_monotonic": bool(all(np.diff(sensitivity.accessible_area_km2) >= -1e-9)),
             "coverage_bounds": bool(((sensitivity.population_coverage_pct >= 0) & (sensitivity.population_coverage_pct <= 100)).all()),

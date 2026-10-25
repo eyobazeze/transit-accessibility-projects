@@ -56,7 +56,7 @@ def base(outline, title, figsize=MAP_SIZE, fill=GREY):
     ax.set_aspect("equal")
     ax.set_axis_off()
     fig.subplots_adjust(left=0.02, right=0.98, top=0.93, bottom=0.02)
-    ax.set_title(title, fontsize=15, pad=8)
+    ax.set_title(title, fontsize=18, pad=8)
     return fig, ax
 
 
@@ -68,14 +68,14 @@ def finish_map(ax, outline):
     ax.plot([x0, x0 + 5000], [y0, y0], color="black", linewidth=1.4, zorder=7)
     for xt in (x0, x0 + 5000):
         ax.plot([xt, xt], [y0 - 280, y0 + 280], color="black", linewidth=1.4, zorder=7)
-    ax.text(x0, y0 - 500, "0", ha="center", va="top", fontsize=10, zorder=7)
-    ax.text(x0 + 5000, y0 - 500, "5 km", ha="center", va="top", fontsize=10, zorder=7)
+    ax.text(x0, y0 - 500, "0", ha="center", va="top", fontsize=13, zorder=7)
+    ax.text(x0 + 5000, y0 - 500, "5 km", ha="center", va="top", fontsize=13, zorder=7)
     ax.set_ylim(y0 - 1800, maxy + 500)
     # north arrow: upper right
     nx, ny = minx + 2500, maxy - 800
     ax.annotate("", xy=(nx, ny), xytext=(nx, ny - 3200),
                 arrowprops=dict(arrowstyle="-|>", color="black", lw=1.8), zorder=7)
-    ax.text(nx, ny + 400, "N", ha="center", va="bottom", fontsize=12, fontweight="bold", zorder=7)
+    ax.text(nx, ny + 400, "N", ha="center", va="bottom", fontsize=16, fontweight="bold", zorder=7)
 
 
 def fig1(outline, stops):
@@ -84,9 +84,9 @@ def fig1(outline, stops):
     finish_map(ax, outline)
     ax.legend(handles=[
         Line2D([0], [0], marker="o", color="none", markerfacecolor=BLUE, alpha=0.8, markersize=6,
-               label=f"OSM-mapped transit access point (n = {len(stops):,})"),
-        Line2D([0], [0], color="black", lw=1, label="Study boundary (SSGI woredas, dissolved)")],
-        loc="lower left", bbox_to_anchor=(0.0, 0.085), frameon=False, fontsize=10)
+               label=f"OSM transit access point\n(n = {len(stops):,})"),
+        Line2D([0], [0], color="black", lw=1, label="Study boundary\n(dissolved woredas)")],
+        loc="lower left", bbox_to_anchor=(0.0, 0.05), frameon=False, fontsize=14)
     return fig
 
 
@@ -97,11 +97,11 @@ def grouped_legend(ax, groups, **kw):
         headers.append(len(handles))
         handles.append(Patch(facecolor="none", edgecolor="none", label=heading))
         handles.extend(hs)
-    leg = ax.legend(handles=handles, loc="lower left", bbox_to_anchor=(0.0, 0.085), frameon=False,
-                    fontsize=10, handlelength=1.6, **kw)
+    leg = ax.legend(handles=handles, loc="lower left", bbox_to_anchor=(-0.01, 0.03), frameon=False,
+                    fontsize=13, handlelength=1.6, **kw)
     for i in headers:
         leg.get_texts()[i].set_fontweight("bold")
-        leg.get_texts()[i].set_fontsize(11)
+        leg.get_texts()[i].set_fontsize(12.5)
     return leg
 
 
@@ -133,15 +133,15 @@ def fig3(outline, cells, priority):
     priority.plot(ax=ax, facecolor=ACCENT, edgecolor="black", linewidth=0.6, zorder=4)
     for cid, g in priority.groupby("cluster_id"):
         c = g.union_all().centroid
-        ax.text(c.x + 450, c.y + 450, str(int(cid)), fontsize=8.5, fontweight="bold", color="black",
+        ax.text(c.x + 450, c.y + 450, str(int(cid)), fontsize=12, fontweight="bold", color="black",
                 ha="center", va="center", zorder=8,
                 path_effects=[pe.withStroke(linewidth=2.4, foreground="white")])
     finish_map(ax, outline)
     ncl = priority.cluster_id.nunique()
     grouped_legend(ax, [
-        ("Population density (people/km²)", [Patch(facecolor=c, label=l) for c, l in zip(cols, labels)]),
+        ("Density (people/km²)", [Patch(facecolor=c, label=l) for c, l in zip(cols, labels)]),
         ("Screening-priority cell", [Patch(facecolor=ACCENT, edgecolor="black", linewidth=0.6,
-            label=f"Top-quartile density and >= 50% of residents\nbeyond 500 m (n = {len(priority)}; numbers = {ncl} cluster IDs)")]),
+            label=f"n = {len(priority)}; top-quartile density\nand >= 50% of residents\nbeyond 500 m")]),
         ("Other", [Patch(facecolor=GREY, label="No population data")])])
     return fig
 
@@ -152,7 +152,7 @@ def fig4():
     fig, ax = plt.subplots(figsize=(9.86, 6.52), dpi=DPI)
     ax.plot(x, y, marker="o", linewidth=2.5, markersize=8, color=BLUE)
     for xi, yi in zip(x, y):
-        ax.annotate(f"{yi:.1f}%", (xi, yi), textcoords="offset points", xytext=(0, 12), ha="center", fontsize=11.1)
+        ax.annotate(f"{yi:.1f}%", (xi, yi), textcoords="offset points", xytext=(0, 12), ha="center", fontsize=13)
     ax.set_ylim(0, 100)
     ax.set_xticks(range(300, 1001, 100))
     ax.set_xlabel("Euclidean proximity threshold (m)", fontsize=13.25)
