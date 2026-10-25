@@ -1,3 +1,6 @@
+"""Grid-origin sensitivity test for the 500 m priority cells. Run from the repository root:
+    python docs/grid_origin_sensitivity.py
+Prints priority-cell counts for 16 shifted grid origins (0-375 m)."""
 import sys, numpy as np, itertools
 sys.path.insert(0,"src")
 import transit_access_analysis as t
