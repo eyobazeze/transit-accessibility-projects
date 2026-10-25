@@ -158,6 +158,22 @@ The analysis is positioned as a proximity-screening baseline rather than a full 
 - Geurs, K. T., & van Wee, B. (2026). *A five-component conceptual model of calculated and perceived accessibility: Literature review and research directions.* Journal of Transport Geography, 134, 104678. https://doi.org/10.1016/j.jtrangeo.2026.104678
 - Samuel, M., & Emagnu, Y. M. (2026). *Spatial optimization of bus stop locations using GIS and an integrated accessibility index in Addis Ababa, Ethiopia.* Discover Cities, 3, 101. https://doi.org/10.1007/s44327-026-00287-z
 
+## Sensitivity notes
+
+- **Grid origin.** Shifting the 500 m grid origin changes the priority-cell count. Across 16 origins (shifts of 0-375 m in each direction), the count ranged from 58 to 69 cells, their population from about 270,000 to 305,000, and the population beyond 500 m from about 202,000 to 230,000. Reproduce with `python docs/grid_origin_sensitivity.py` from the repository root. Treat priority-cell counts as approximate.
+- **Edge fragments.** Two of the 60 priority cells are small fragments at the study boundary (under 0.05 km², one to three raster pixels) whose density is inflated by their small area. Excluding cells smaller than half a full cell would give 56 priority cells containing about 262,700 people.
+
+## Licences
+
+| Component | Licence |
+|---|---|
+| Code in this repository (`src/`, `docs/*.py`) | MIT (see `LICENSE`) |
+| Administrative boundary (SSGI via HDX) | CC0 1.0 |
+| WorldPop population raster and values derived from it | CC BY 4.0, attribution required (Bondarenko et al., 2025) |
+| OpenStreetMap snapshot and transit points derived from it | ODbL 1.0, attribution required; see https://www.openstreetmap.org/copyright |
+
+Derived outputs in `outputs/` combine WorldPop and OpenStreetMap data. If you reuse them, credit both sources and keep the ODbL and CC BY 4.0 conditions. The MIT licence applies to the code only and does not relicense third-party data.
+
 ## Citation
 
 See `CITATION.cff`.
