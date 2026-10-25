@@ -1,8 +1,19 @@
 cff-version: 1.2.0
-message: "If you use this analysis or derived outputs, please cite the associated working paper."
+message: "If you use this analysis or derived outputs, please cite the associated working paper and this repository."
 title: "Population-Weighted Proximity to Mapped Public Transit in Addis Ababa"
+type: software
+abstract: "Reproducible code and derived outputs for a population-weighted, Euclidean-proximity analysis of gridded population (WorldPop) relative to OpenStreetMap-mapped public-transit access points in Addis Ababa, Ethiopia."
 authors:
   - family-names: Negussie
     given-names: "Eyob Azeze"
-date-released: 2026-10-18
+repository-code: "https://github.com/eyobazeze/transit-accessibility-projects"
 url: "https://github.com/eyobazeze/transit-accessibility-projects"
+license: MIT
+keywords:
+  - Addis Ababa
+  - public transport
+  - transit proximity
+  - OpenStreetMap
+  - WorldPop
+  - spatial analysis
+date-released: 2026-10-25

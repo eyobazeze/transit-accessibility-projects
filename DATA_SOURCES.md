@@ -7,6 +7,7 @@
 **Provider:** WorldPop, University of Southampton  
 **Citation:** Bondarenko et al. (2025), https://doi.org/10.5258/SOTON/WP00839  
 **Note:** constrained product; unsettled pixels are NoData. WorldPop labels this release an early version that may change.  
+**Licence:** CC BY 4.0 (attribution required)  
 **Resolution:** approximately 100 m  
 **Interpretation:** estimated number of people per grid cell.
 
@@ -29,6 +30,7 @@ This is not the OCHA COD-AB boundary set. The HDX record cautions that the datas
 ## 3. OpenStreetMap
 
 **Source:** OpenStreetMap data retrieved through an Overpass API snapshot.  
+**Licence:** ODbL 1.0 (attribution and share-alike apply to the database and derived databases)  
 **Snapshot timestamp:** `2026-07-24T10:57:40Z`  
 **Local snapshot file:** `data/raw/osm/osm_transit_snapshot_2026-07-24.json`  
 **Query:** requested through OSMnx (`ox.features_from_place("Addis Ababa, Ethiopia", tags)`); the generated Overpass text was not saved. The snapshot's contents (2,577 nodes, 75 ways; 2,417 tagged transit nodes) are consistent with the tag list below; see `docs/OSM_RETRIEVAL.md`.
