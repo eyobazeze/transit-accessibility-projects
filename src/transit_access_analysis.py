@@ -195,6 +195,7 @@ def main():
     pop_path = args.population or dp
     osm_path = args.osm or do
     out = args.out or dout
+    (out / "geospatial").mkdir(parents=True, exist_ok=True)
 
     boundary_parts, boundary = load_boundary(boundary_path)
     x, y, pop, grid_origin, source_crs, source_resolution = load_population(pop_path, boundary)
