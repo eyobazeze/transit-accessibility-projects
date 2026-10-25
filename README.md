@@ -176,7 +176,7 @@ Derived outputs in `outputs/` combine WorldPop and OpenStreetMap data. If you re
 
 ## Citation
 
-See `CITATION.cff`.
+Archived release (all versions): https://doi.org/10.5281/zenodo.23639500 (v1.0.0: https://doi.org/10.5281/zenodo.23639501). See also `CITATION.cff`.
 
 ## OSM attribution
 
