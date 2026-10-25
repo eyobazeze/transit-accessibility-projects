@@ -29,7 +29,7 @@ At 500 m, 60 high-density screening-priority cells were identified. Together the
 - Approximate resolution: 100 m (3 arc-seconds)
 - Constrained product: unsettled pixels are NoData (about 8% of pixels inside the study boundary)
 - Population values represent **estimated people per grid cell**.
-- Citation: Bondarenko et al. (2026), DOI: https://doi.org/10.5258/SOTON/WP00839 (WorldPop describes R2025A v1 as an early release that may change)
+- Citation: Bondarenko et al. (2025), DOI: https://doi.org/10.5258/SOTON/WP00839 (WorldPop describes R2025A v1 as an early release that may change)
 
 The analysis uses the native population pixels and preserves their total population count. Population pixels are classified by their Euclidean distance to the nearest transit access point and then aggregated to 500 m research cells.
 
