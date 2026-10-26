@@ -153,7 +153,9 @@ def fig4():
     ax.plot(x, y, marker="o", linewidth=2.5, markersize=8, color=BLUE)
     for xi, yi in zip(x, y):
         ax.annotate(f"{yi:.1f}%", (xi, yi), textcoords="offset points", xytext=(0, 12), ha="center", fontsize=13)
-    ax.set_ylim(0, 100)
+    ax.set_ylim(0, 108)
+    ax.set_yticks(range(0, 101, 20))
+    ax.set_xlim(250, 1050)
     ax.set_xticks(range(300, 1001, 100))
     ax.set_xlabel("Euclidean proximity threshold (m)", fontsize=13.25)
     ax.set_ylabel("Population coverage (%)", fontsize=13.25)
