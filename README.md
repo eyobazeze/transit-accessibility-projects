@@ -74,7 +74,7 @@ In this project, **population-weighted proximity** means that threshold coverage
 For threshold \(T\):
 
 \[
-C_T = \frac{\sum_i P_i I(d_i \leq T)}{\sum_i P_i} \times 100
+CT = [Σ Pi I(di ≤ T) / Σ Pi] × 100
 \]
 
 where \(P_i\) is estimated population and \(d_i\) is Euclidean distance to the nearest mapped transit access point.
