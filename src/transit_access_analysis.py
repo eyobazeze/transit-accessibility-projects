@@ -248,6 +248,9 @@ def main():
     cluster_map, clusters = connected_clusters(priority)
     priority["cluster_id"] = [cluster_map[(int(r), int(c))] for r, c in zip(priority.row, priority.col)]
     priority.to_crs("EPSG:4326").to_file(out / "geospatial/priority_cells_500m.geojson", driver="GeoJSON")
+    # Inputs for src/make_figures.py (kept in EPSG:32637, the analysis CRS).
+    cells.to_file(out / "geospatial/population_access_cells_500m.geojson", driver="GeoJSON")
+    points.to_file(out / "geospatial/transit_access_points.geojson", driver="GeoJSON")
 
     cluster_rows = []
     for cid, group in priority.groupby("cluster_id"):
