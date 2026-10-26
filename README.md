@@ -106,18 +106,22 @@ This project should **not** be described as a complete measure of public transpo
 │   ├── geospatial/            # derived GeoJSON/CSV outputs
 │   └── analysis_metadata.json
 ├── src/
-│   └── transit_access_analysis.py
+│   ├── transit_access_analysis.py   # analysis
+│   └── make_figures.py              # figures from saved outputs
+├── docs/
+│   ├── OSM_RETRIEVAL.md
+│   ├── REPRODUCIBILITY_NOTES.md
+│   └── grid_origin_sensitivity.py
 ├── CITATION.cff
 ├── DATA_SOURCES.md
+├── LICENSE
 ├── requirements.txt
-├── docs/
-│   └── REPRODUCIBILITY_NOTES.md
 └── README.md
 ```
 
 ## Reproduce the analysis
 
-Create an environment with Python 3.10+ and install the dependencies:
+Create an environment with Python 3.10 or newer and install the dependencies:
 
 ```bash
 pip install -r requirements.txt
@@ -139,13 +143,13 @@ Density classes in Figure 3 are quartiles of the 2,155 research-cell densities, 
 
 ## Validation checks
 
-The workflow checks that:
+The script records the following checks in `outputs/analysis_metadata.json` (it does not stop on failure):
 
 - population is preserved to floating-point precision;
 - served population is monotonic as the threshold increases;
 - served area is monotonic as the threshold increases;
 - coverage percentages remain between 0 and 100%;
-- the native population-pixel and transit-point counts match the dated source snapshot used for the paper.
+- the native population-pixel and transit-point counts are recorded alongside the dated source snapshot used for the paper.
 
 ## Related literature
 
